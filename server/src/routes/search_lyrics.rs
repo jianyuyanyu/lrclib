@@ -31,6 +31,7 @@ pub struct TrackResponse {
     instrumental: bool,
     plain_lyrics: Option<String>,
     synced_lyrics: Option<String>,
+    lyricsfile: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -50,7 +51,7 @@ pub async fn route(
 
     // Generate a cache key based on query parameters
     let cache_key = format!(
-        "{}:{}:{}:{}",
+        "search:v2:{}:{}:{}:{}",
         q.as_deref().unwrap_or_default(),
         track_name.as_deref().unwrap_or_default(),
         artist_name.as_deref().unwrap_or_default(),
@@ -121,6 +122,11 @@ fn create_response(tracks: Vec<SimpleTrack>) -> Vec<TrackResponse> {
                 None => false,
             };
 
+            let lyricsfile = match track.last_lyrics {
+                Some(ref lyrics) => lyrics.lyricsfile.to_owned(),
+                None => None,
+            };
+
             TrackResponse {
                 id: track.id,
                 name: track.name.to_owned(),
@@ -131,6 +137,7 @@ fn create_response(tracks: Vec<SimpleTrack>) -> Vec<TrackResponse> {
                 instrumental,
                 plain_lyrics,
                 synced_lyrics,
+                lyricsfile,
             }
         })
         .collect()

@@ -21,6 +21,7 @@ pub struct TrackResponse {
     instrumental: bool,
     plain_lyrics: Option<String>,
     synced_lyrics: Option<String>,
+    lyricsfile: Option<String>,
 }
 
 pub async fn route(
@@ -54,6 +55,11 @@ fn create_response(track: SimpleTrack) -> TrackResponse {
         None => false,
     };
 
+    let lyricsfile = match track.last_lyrics {
+        Some(ref lyrics) => lyrics.lyricsfile.to_owned(),
+        None => None,
+    };
+
     TrackResponse {
         id: track.id,
         name: track.name.to_owned(),
@@ -64,5 +70,6 @@ fn create_response(track: SimpleTrack) -> TrackResponse {
         instrumental,
         plain_lyrics,
         synced_lyrics,
+        lyricsfile,
     }
 }

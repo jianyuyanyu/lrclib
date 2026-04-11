@@ -148,7 +148,7 @@ pub fn build_get_metadata_cache_key(
     let duration_value = duration_bucket.map(|d| d.to_string()).unwrap_or_default();
 
     format!(
-        "get:v2:{}:{}:{}:{}",
+        "get:v3:{}:{}:{}:{}",
         track_name_lower, artist_name_lower, album, duration_value,
     )
 }

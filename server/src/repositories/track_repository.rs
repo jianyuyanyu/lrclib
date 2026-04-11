@@ -19,7 +19,8 @@ pub fn get_track_by_id(track_id: i64, conn: &mut Connection) -> Result<Option<Si
       tracks.last_lyrics_id,
       lyrics.instrumental,
       lyrics.plain_lyrics,
-      lyrics.synced_lyrics
+      lyrics.synced_lyrics,
+      lyrics.lyricsfile
     FROM
       tracks
       LEFT JOIN lyrics ON tracks.last_lyrics_id = lyrics.id
@@ -37,6 +38,7 @@ pub fn get_track_by_id(track_id: i64, conn: &mut Connection) -> Result<Option<Si
             let last_lyrics = SimpleLyrics {
                 plain_lyrics: row.get("plain_lyrics")?,
                 synced_lyrics: row.get("synced_lyrics")?,
+                lyricsfile: row.get("lyricsfile")?,
                 instrumental,
             };
 
@@ -151,7 +153,8 @@ pub fn get_track_by_metadata(
       tracks.last_lyrics_id,
       lyrics.instrumental,
       lyrics.plain_lyrics,
-      lyrics.synced_lyrics
+      lyrics.synced_lyrics,
+      lyrics.lyricsfile
     FROM
       tracks
       LEFT JOIN lyrics ON tracks.last_lyrics_id = lyrics.id
@@ -203,6 +206,7 @@ pub fn get_track_by_metadata(
                 let last_lyrics = SimpleLyrics {
                     plain_lyrics: row.get("plain_lyrics")?,
                     synced_lyrics: row.get("synced_lyrics")?,
+                    lyricsfile: row.get("lyricsfile")?,
                     instrumental,
                 };
 
@@ -260,7 +264,8 @@ pub fn get_tracks_by_keyword(
       tracks.duration,
       lyrics.instrumental,
       lyrics.plain_lyrics,
-      lyrics.synced_lyrics
+      lyrics.synced_lyrics,
+      lyrics.lyricsfile
     FROM
       ({subquery}) AS search_results
       LEFT JOIN tracks ON search_results.rowid = tracks.id
@@ -303,6 +308,7 @@ pub fn get_tracks_by_keyword(
         let last_lyrics = SimpleLyrics {
             plain_lyrics: row.get("plain_lyrics")?,
             synced_lyrics: row.get("synced_lyrics")?,
+            lyricsfile: row.get("lyricsfile")?,
             instrumental,
         };
 
