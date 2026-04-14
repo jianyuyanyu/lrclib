@@ -21,6 +21,15 @@ LRCLIB_LOG=info cargo run --release -- serve --database db.sqlite3
 
 Server will be available at http://0.0.0.0:3300
 
+## Database configuration
+
+You have two environment variables available to tweak the database connection:
+
+* `LRCLIB_MMAP_SIZE` (default `30000000000` - 30GB): set [SQLite's `mmap_size`](https://www.sqlite.org/mmap.html) parameter. This should be less than 75% of the available RAM. Using an excessive value might cause memory swapping, decreasing performance.
+* `LRCLIB_CACHE_SIZE` (default `-1000000` - 1GB): set [SQLite's `cache_size`](https://sqlite.org/pragma.html#pragma_cache_size) parameter. Negative values are kilobytes.
+
+Use these variables to optimize memory usage in low traffic and/or low memory situations. The default values are generously sized to be used on a production system.
+
 ## Setup with Podman/Docker
 
 ### Basic
