@@ -276,8 +276,9 @@ pub async fn serve_with_queue<F, Fut>(
         .await
         .unwrap();
 
-    println!(
-        "LRCLIB server is listening on {}!",
+     println!(
+        "LRCLIB server v{} is listening on {}!",
+        env!("CARGO_PKG_VERSION"),
         listener.local_addr().unwrap()
     );
 

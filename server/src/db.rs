@@ -30,7 +30,21 @@ pub fn set_pragma(conn: &mut Connection) -> Result<()> {
     conn.pragma_update(None, "journal_mode", "WAL")?;
     conn.pragma_update(None, "synchronous", "NORMAL")?;
     conn.pragma_update(None, "temp_store", "MEMORY")?;
-    conn.pragma_update(None, "mmap_size", "30000000000")?;
+    
+    let mmap_size = std::env::var("LRCLIB_MMAP_SIZE")
+        .ok()
+        .and_then(|val| val.parse::<i64>().ok())
+        .unwrap_or(30000000000i64)
+        .to_string();
+    conn.pragma_update(None, "mmap_size", &mmap_size)?;
+    
+    let cache_size = std::env::var("LRCLIB_CACHE_SIZE")
+        .ok()
+        .and_then(|val| val.parse::<i64>().ok())
+        .unwrap_or(-1000000i64)
+        .to_string();
+    conn.pragma_update(None, "cache_size", &cache_size)?;
+
     Ok(())
 }
 
